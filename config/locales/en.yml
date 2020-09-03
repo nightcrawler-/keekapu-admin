@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  welcome: "Welcome to myKeekapu Dashboard"
+  empty: "No data available. Debt perfomance, other KPI will appear here"
+

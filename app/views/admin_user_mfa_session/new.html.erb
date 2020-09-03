@@ -1,0 +1,22 @@
+<div>
+    <% if flash[:error] %>
+    <div>
+        <ul>
+            <%= flash[:error] %>
+        </ul>
+    </div>
+    <% end %>
+</div>
+<div>
+    <div>
+        <h2>Please scan this QR-code with your app</h2>
+        <img src="<%= @current_admin_user.google_qr_uri %>">
+    </div>
+    <div>
+        <%= form_tag admin_user_mfa_session_index_path, method: :post do %>
+        <p>Please fill in you authentication code here:</p>
+        <%= text_field :auth, :mfa_code, autofocus: true %>
+        <%= submit_tag 'authenticate' %>
+        <% end %>
+    </div>
+</div>

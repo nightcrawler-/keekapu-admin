@@ -317,7 +317,7 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-  # config.footer = 'my custom footer text'
+  config.footer = 'powered by myKeekapu'
 
   # == Sorting
   #
@@ -332,4 +332,17 @@ ActiveAdmin.setup do |config|
   # You can switch to using Webpacker here.
   #
   config.use_webpacker = true
+
+  # For all requests to require OTPs
+  # config.before_action do
+  #   if !(admin_user_mfa_session = AdminUserMfaSession.find) && (admin_user_mfa_session ? admin_user_mfa_session.record == current_admin_user : !admin_user_mfa_session)
+  #     redirect_to new_admin_user_mfa_session_path
+  #   end if current_admin_user && "/admin/mfa" != request.path
+  #   if "/admin/logout" == request.path
+  #     current_admin_user.mfa_secret = nil
+  #     current_admin_user.save!
+  #     AdminUserMfaSession.destroy
+  #   end
+  # end
+
 end
