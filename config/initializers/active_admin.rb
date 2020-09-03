@@ -334,15 +334,15 @@ ActiveAdmin.setup do |config|
   config.use_webpacker = true
 
   # For all requests to require OTPs
-  # config.before_action do
-  #   if !(admin_user_mfa_session = AdminUserMfaSession.find) && (admin_user_mfa_session ? admin_user_mfa_session.record == current_admin_user : !admin_user_mfa_session)
-  #     redirect_to new_admin_user_mfa_session_path
-  #   end if current_admin_user && "/admin/mfa" != request.path
-  #   if "/admin/logout" == request.path
-  #     current_admin_user.mfa_secret = nil
-  #     current_admin_user.save!
-  #     AdminUserMfaSession.destroy
-  #   end
-  # end
+  config.before_action do
+    if !(admin_user_mfa_session = AdminUserMfaSession.find) && (admin_user_mfa_session ? admin_user_mfa_session.record == current_admin_user : !admin_user_mfa_session)
+      redirect_to new_admin_user_mfa_session_path
+    end if current_admin_user && "/admin/mfa" != request.path
+    if "/admin/logout" == request.path
+      current_admin_user.mfa_secret = nil
+      current_admin_user.save!
+      AdminUserMfaSession.destroy
+    end
+  end
 
 end
