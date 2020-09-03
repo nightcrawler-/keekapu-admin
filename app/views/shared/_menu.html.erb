@@ -1,0 +1,404 @@
+<!-- BEGIN: Main Menu-->
+<% @organization = current_user.organization %>
+
+<div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+      <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row fixed-top">
+                  <li class="nav-item mr-auto"><a class="navbar-brand" href="#">
+                              <h6 class="brand-text mb-0">QHSE <br /> Management</h6>
+                        </a></li>
+                  <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i
+                                    class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i
+                                    class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary"
+                                    data-ticon="icon-disc"></i></a></li>
+            </ul>
+      </div>
+      <div class="shadow-bottom"></div>
+      <div class="main-menu-content">
+            <ul class="navigation navigation-main " id="main-menu-navigation" data-menu="menu-navigation">
+                  <li margin-top="180px" class=" nav-item <%= yield :home %>"><a href="/"><i
+                                    class="feather icon-home"></i><span class="menu-title"
+                                    data-i18n="Dashboard">Dashboard</span></a>
+                  </li>
+
+
+                  <!-- This should be visible to admin only-->
+                  <% if current_user.has_role?(:'super-admin') %>
+                  <li class=" navigation-header"><span>Administration</span>
+                  </li>
+                  <li class="nav-item <%= yield :organizations %>"><a href="<%= organizations_url %>"><i
+                                    class="feather icon-briefcase"></i><span class="menu-title"
+                                    data-i18n="Colors">Organizations</span></a>
+                  </li>
+
+                  <li class="nav-item <%= yield :branches %>"><a href="<%= branches_url %>"><i
+                                    class="feather icon-credit-card"></i><span class="menu-title"
+                                    data-i18n="Colors">Branches/Regions</span></a>
+                  </li>
+
+                  <li class="nav-item <%= yield :users %>"><a href="<%= users_url %>"><i
+                                    class="feather icon-users"></i><span class="menu-title"
+                                    data-i18n="Colors">Users</span></a>
+                  </li>
+                  <% end %>
+
+                  <!-- This Planning Module should be visible to user only-->
+                  <% if current_user.has_any_role?(:'org-admin') %>
+
+                  <li class=" navigation-header"><span>Planning</span>
+
+                        <% if @organization.has_role?(:'project') %>
+                  <li class="nav-item <%= yield :projects %>"><a href="<%= projects_url %>"><i
+                                    class="feather icon-clipboard"></i><span class="menu-title"
+                                    data-i18n="Colors">Projects</span></a>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'action_planner') %>
+                  <li class="nav-item <%= yield :work_schedules %>"><a href="<%= work_schedules_url %>"><i
+                                    class="feather icon-calendar"></i><span class="menu-title" data-i18n="Colors">Yearly
+                                    Action
+                                    Planner</span></a>
+                  </li>
+                  <% end %>
+
+                  <li class=" navigation-header"><span>HSE Management</span>
+                        <% end %>
+                        <!-- Ends the first role based for org,site admins-->
+
+                        <% if current_user.has_any_role?(:'org-admin', :'site-admin', :'approver') %>
+
+                        <% if @organization.has_role?(:'contractor_management') %>
+
+                  <li><a href="#"><i class="fa fa-road"></i><span class="menu-title" data-i18n="Menu Levels">Contractor
+                                    Management</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :contractors %>"><a href="<%= management_contractors_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Suppliers</span></a>
+                              </li>
+                              <li class="<%= yield :management_contractor_site_observations %>"><a
+                                          href="<%= management_contractor_site_observations_url%>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Contractor Site Observation</span></a>
+                              </li>
+                        </ul>
+                  </li>
+                  <% end %>
+                  <% end %>
+                  <!-- Ends the second role based for org,sit admins and approver for contradtor mgt-->
+
+                  <% if current_user.has_any_role?(:'org-admin', :'site-admin') %>
+
+                  <% if @organization.has_role?(:'asset_management') %>
+                  <li><a href="#"><i class="fa fa-cogs"></i><span class="menu-title" data-i18n="Menu Levels">Asset
+                                    Management</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :management_assets %>"><a href="<%= management_assets_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Assets</span></a>
+                              </li>
+                              <li class="<%= yield :management_chemicals %>"><a href="<%= management_chemicals_url%>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Chemicals</span></a>
+                              </li>
+                              <li class="<%= yield :management_substances %>"><a
+                                          href="<%= management_substances_url%>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">COSHH</span></a>
+                              </li>
+                              <li class="<%= yield :management_inspections %>"><a
+                                          href="<%= management_inspections_url%>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Inspection</span></a>
+                              </li>
+
+                        </ul>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'environmental_assessment') %>
+                  <li><a href="#"><i class="fa fa-tree"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Environmental Assesment</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :environmental_legal_requirements %>"><a
+                                          href="<%= environmental_legal_requirements_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Legal or Other Requirements</span></a>
+                              </li>
+                              <li class="<%= yield :environmental_improvement_suggestions %>"><a
+                                          href="<%= environmental_improvement_suggestions_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Non-Conformity & Suggestion for
+                                                Improvement</span></a>
+                              </li>
+                              <li class="<%= yield :environmental_waste_transfers %>"><a href="
+                                    <%= environmental_waste_transfers_url %>"><i class="feather icon-circle"></i><span
+                                                class="menu-item" data-i18n="Second Level">Waste Transfer
+                                                Matrix</span></a>
+                              </li>
+                              <li class="<%= yield :environmental_emergency_response_tests %>"><a href="
+                                    <%= environmental_emergency_response_tests_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Emergency Response Tests</span></a>
+                              </li>
+
+                              <li class="<%= yield :environmental_measurements %>"><a href="
+                                    <%= environmental_measurements_url %>"><i class="feather icon-circle"></i><span
+                                                class="menu-item" data-i18n="Second Level">Monitoring and
+                                                Measurements</span></a>
+                              </li>
+
+                              <li class="<%= yield :environmental_impact_assessments %>"><a href="
+                                    <%= environmental_impact_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Aspects and Impacts Assessment</span></a>
+                              </li>
+
+                              <li class="<%= yield :environmental_corrective_and_preventive_actions %>"><a href="
+                                    <%= environmental_corrective_and_preventive_actions_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Corrective and Preventive Action</span></a>
+                              </li>
+
+                        </ul>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'risk_assessment') %>
+                  <li><a href="#"><i class="fa fa-bomb"></i><span class="menu-title" data-i18n="Menu Levels">Risk
+                                    Assessment</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :risk_substance_assessments %>"><a
+                                          href="<%= risk_substance_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">COSHH</span></a>
+                              </li>
+
+                              <li class="<%= yield :risk_dse_assessments %>"><a
+                                          href="<%= risk_dse_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">DSE</span></a>
+                              </li>
+
+                              <li class="<%= yield :risk_fsr_assesments %>"><a href="<%= risk_fsr_assesments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Fire Safety Risk</span></a>
+                              </li>
+
+                              <li class="<%= yield :risk_noise_assessments %>"><a
+                                          href="<%= risk_noise_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Noise</span></a>
+                              </li>
+
+                              <li class="<%= yield :risk_ppe_assessments %>"><a
+                                          href="<%= risk_ppe_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">PPE</span></a>
+                              </li>
+
+                              <li class="<%= yield :risk_mhr_assessments %>"><a
+                                          href="<%= risk_mhr_assessments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Manual Handling Risk Assessment</span></a>
+                              </li>
+
+                        </ul>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'auditing') %>
+
+                  <li><a href="#"><i class="fa fa-balance-scale"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Auditing</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :audit_environments %>"><a href="<%= audit_environments_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Environmental</span></a>
+                              </li>
+
+                              <li class="<%= yield :audit_safety_healths %>"><a
+                                          href="<%= audit_safety_healths_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Health and Safety</span></a>
+                              </li>
+                              <li class="<%= yield :audit_fire_safeties %>"><a href="<%= audit_fire_safeties_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Fire Safety</span></a>
+                              </li>
+                        </ul>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'behavioural_management') %>
+
+                  <li><a href="#"><i class="fa fa-child"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Behavioural Management</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :behaviour_job_observations %>"><a
+                                          href="<%= behaviour_job_observations_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Job Observation</span></a>
+                              </li>
+                        </ul>
+                  </li>
+
+                  <% end %>
+
+                  <% end %>
+
+                  <% if current_user.has_any_role?(:'staff', :'org-admin') %>
+
+                  <% if @organization.has_role?(:'incident_management') %>
+
+                  <li><a href="#"><i class="fa fa-font-awesome"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Incident Management</span></a>
+                        <ul class="menu-content">
+                              <li class="<%= yield :incident_witness_statements %>"><a
+                                          href="<%= incident_witness_statements_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Accident Witness Statement</span></a>
+                              </li>
+                              <li class="<%= yield :incident_environmentals %>"><a
+                                          href="<%= incident_environmentals_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Environmental Incident</span></a>
+                              </li>
+
+                              <li class="<%= yield :incident_health_safeties %>"><a
+                                          href="<%= incident_health_safeties_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Health and Safety Incident</span></a>
+                              </li>
+
+                              <li class="<%= yield :incident_emergency_test_reviews %>"><a
+                                          href="<%= incident_emergency_test_reviews_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Emergency Test and Incident Review</span></a>
+                              </li>
+
+                              <li class="<%= yield :incident_accident_claims %>"><a
+                                          href="<%= incident_accident_claims_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Accident Claim</span></a>
+                              </li>
+                        </ul>
+                  </li>
+
+                  <% end %>
+                  <% end %>
+                  <% if current_user.has_role?(:'org-admin') %>
+
+                  <% if @organization.has_role?(:'training_management') %>
+
+                  <li><a href="#"><i class="fa fa-graduation-cap"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Training Management</span></a>
+                        <ul class="menu-content">
+
+                              <li class="<%= yield :training_job_activities %>"><a
+                                          href="<%= training_job_activities_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Training Matrix</span></a>
+                              </li>
+
+                              <li class="<%= yield :training_students %>"><a href="<%= training_students_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Participants</span></a>
+                              </li>
+                              <li class="<%= yield :training_courses %>"><a href="<%= training_courses_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Courses</span></a>
+                              </li>
+
+                              <li class="<%= yield :training_student_courses %>"><a
+                                          href="<%= training_student_courses_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Training Log</span></a>
+                              </li>
+
+                        </ul>
+                  </li>
+
+                  <% end %>
+
+                  <% end %>
+
+                  <% if current_user.has_any_role?(:'approver', :'org-admin') %>
+
+                  <% if @organization.has_role?(:'permit_to_work') %>
+
+                  <li><a href="#"><i class="fa fa-building-o"></i><span class="menu-title"
+                                    data-i18n="Menu Levels">Permit to Work</span></a>
+                        <ul class="menu-content">
+
+                              <li class="<%= yield :permit_applications %>"><a href="<%= permit_applications_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Application</span></a>
+                              </li>
+
+                              <li class="<%= yield :permit_closures %>"><a href="<%= permit_closures_url %>"><i
+                                                class="feather icon-circle"></i><span class="menu-item"
+                                                data-i18n="Second Level">Closure</span></a>
+                              </li>
+
+                        </ul>
+
+                  </li>
+                  <% end %>
+                  <% end %>
+
+                  <% if current_user.has_any_role?(:'org-admin') %>
+
+                  <li class=" navigation-header"><span>QA/QC Management</span>
+
+                        <% if @organization.has_role?(:'internal_audit_checks') %>
+
+                  <li class="nav-item <%= yield :qa_internal_audits %>"><a href="<%= qa_internal_audits_url %> "><i
+                                    class="fa fa-pencil-square-o"></i><span class="menu-title"
+                                    data-i18n="Colors">Internal Audit
+                                    Checklist</span></a>
+                  </li>
+
+                  <% end %>
+
+                  <% if @organization.has_role?(:'project_audit_and_review') %>
+
+                  <li class="<%= yield :qa_project_audit_reviews %>"><a href="<%= qa_project_audit_reviews_url %>"><i
+                                    class="fa fa-check-circle-o"></i><span class="menu-item"
+                                    data-i18n="Second Level">Project Audit and Review
+                                    Checklist</span></a>
+                  </li>
+                  <% end %>
+
+                  <% if @organization.has_role?(:'quality_process_audit') %>
+
+                  <li class="<%= yield :qa_quality_process_audits %>"><a href="<%= qa_quality_process_audits_url %>"><i
+                                    class="fa fa-bullhorn"></i><span class="menu-item" data-i18n="Second Level">Quality
+                                    Process Audit</span></a>
+                  </li>
+
+                  <% end %>
+
+                  <% if @organization.has_role?(:'quality_product_review') %>
+
+                  <li class="<%= yield :qa_quality_product_reviews %>"><a
+                              href="<%= qa_quality_product_reviews_url %>"><i class="fa fa-bullseye"></i><span
+                                    class="menu-item" data-i18n="Second Level">Quality Product Review</span></a>
+                  </li>
+
+                  <% end %>
+
+                  <% if @organization.has_role?(:'quality_improvement') %>
+
+                  <li class="<%= yield :qa_quality_improvements %>"><a href="<%= qa_quality_improvements_url %>"><i
+                                    class="fa fa-xing-square"></i><span class="menu-item"
+                                    data-i18n="Second Level">Quality Improvement</span></a>
+                  </li>
+
+                  <% end %>
+                  <% end %>
+            </ul>
+      </div>
+</div>
+<!-- END: Main Menu-->
