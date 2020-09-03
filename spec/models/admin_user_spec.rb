@@ -8,6 +8,7 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  google_secret          :string
+#  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
 #  mfa_secret             :string
 #  remember_created_at    :datetime
