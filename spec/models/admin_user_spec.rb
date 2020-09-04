@@ -26,5 +26,18 @@
 require 'rails_helper'
 
 RSpec.describe AdminUser, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  subject {
+    described_class.new(
+      email: "me@you.com",
+      password: "password",
+      password_confirmation: "password"
+    )
+  }
+
+  describe "Validations" do
+    it "is valid with valid attributes" do
+      expect(subject).to be_valid
+    end
+  end
 end
