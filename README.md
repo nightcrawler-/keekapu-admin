@@ -1,5 +1,7 @@
 # myKeekapu
 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/166a4300c10fd75a0207/test_coverage)](https://codeclimate.com/repos/5f513b322e6b7a4d1200e16e/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/166a4300c10fd75a0207/maintainability)](https://codeclimate.com/repos/5f513b322e6b7a4d1200e16e/maintainability) [![CircleCI](https://circleci.com/gh/Cafrecode/qhse-fs.svg?style=shield&circle-token=cc75c0c24e484e74d422bfe50a30a9d75b08333c)](https://circleci.com/gh/Cafrecode/keekapu-admin)
+
 ### Setup
 
 #### Install Ruby
