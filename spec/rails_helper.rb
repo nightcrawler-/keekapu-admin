@@ -61,4 +61,35 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Devise helpers for auth things
+  config.include Warden::Test::Helpers, type: :controller
+  config.include Warden::Test::Helpers, type: :request
+  config.include Warden::Test::Helpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :view
+
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
+
+  SimpleCov.start do
+    add_filter '/test/'
+    add_filter '/config/'
+    add_filter '/vendor/'
+    add_filter '/spec/'
+  
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Models', 'app/models'
+    add_group 'Helpers', 'app/helpers'
+    add_group 'Mailers', 'app/mailers'
+  end
+  # This outputs the report to your public folder
+  # You will want to add this to .gitignore
+  SimpleCov.coverage_dir 'coverage'
+
 end
