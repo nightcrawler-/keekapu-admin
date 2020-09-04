@@ -7,15 +7,13 @@
             <div class="card-content">
                 <div class="card-body pt-1">
 
+                    <% if flash[:error] %>
                     <div>
-                        <% if flash[:error] %>
-                        <div>
-                            <ul>
-                                <%= flash[:error] %>
-                            </ul>
-                        </div>
-                        <% end %>
+                        <ul>
+                            <%= flash[:error] %>
+                        </ul>
                     </div>
+                    <% end %>
                     <div>
                         <div>
                             <h3>Please scan this QR-code with<br> your app if it's the <strong>first time</strong></h3>
